@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>IP Test</title>
+</head>
+<body>
+
+<button onclick="getIP()">Ver mi IP</button>
+<p id="result"></p>
+
+<script>
+function getIP() {
+  fetch("http://localhost:3000/ip")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("result").innerText =
+        "Tu IP es: " + data.ip;
+    });
+}
+</script>
+
+</body>
+</html>
