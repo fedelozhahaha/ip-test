@@ -2,34 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>See My IPs</title>
+  <title>Hyperion.IP</title>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #result { margin-top: 20px; font-weight: bold; white-space: pre; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      white-space: pre;
+    }
   </style>
 </head>
 <body>
-  <h1>See My IPs</h1>
-  <button onclick="getIP()">Show my IPs</button>
+  <h1>Hyperion.IP</h1>
+  <p>Scanning connection...</p>
   <pre id="result"></pre>
 
   <script>
-    function getIP() {
-      fetch("/ip")
-        .then(res => res.json())
-        .then(data => {
-          const ipsText = data.ips
-            .map((ip, index) => `Hyperion.IP ${index + 1}: ${ip}`)
-            .join("\n");
+    // Se ejecuta automáticamente al entrar
+    fetch("/ip")
+      .then(res => res.json())
+      .then(data => {
+        const text = data.ips
+          .map((ip, i) => `#${i + 1}. ${ip}`)
+          .join("\n");
 
-          document.getElementById("result").innerText = ipsText;
-        })
-        .catch(err => {
-          document.getElementById("result").innerText = "Error getting the IP.";
-          console.error(err);
-        });
-    }
+        document.getElementById("result").innerText = text;
+      })
+      .catch(() => {
+        document.getElementById("result").innerText =
+          "Error retrieving IP information.";
+      });
   </script>
 </body>
 </html>
