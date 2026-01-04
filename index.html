@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>IP Test</title>
+  <title>Ver IP</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
+  <h1>Ver mi IP</h1>
+  <button onclick="getIP()">Ver mi IP</button>
+  <p id="result"></p>
 
-<button onclick="getIP()">Ver mi IP</button>
-<p id="result"></p>
-
-<script>
-function getIP() {
-  fetch("http://localhost:3000/ip")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("result").innerText =
-        "Tu IP es: " + data.ip;
-    });
-}
-</script>
-
+  <script>
+    function getIP() {
+      fetch("/ip")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("result").innerText =
+            "Tu IP es: " + data.ip;
+        })
+        .catch(err => {
+          document.getElementById("result").innerText =
+            "Error al obtener la IP";
+          console.error(err);
+        });
+    }
+  </script>
 </body>
 </html>

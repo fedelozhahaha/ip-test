@@ -1,17 +1,19 @@
 const express = require("express");
-const https = require("https");
+const path = require("path");
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
+// Servir archivos estáticos (index.html, CSS, JS)
+app.use(express.static(path.join(__dirname)));
+
+// Ruta /ip para devolver la IP
 app.get("/ip", (req, res) => {
-  https.get("https://api.ipify.org?format=json", response => {
-    let data = "";
-    response.on("data", chunk => data += chunk);
-    response.on("end", () => {
-      res.json(JSON.parse(data));
-    });
-  });
+  // Obtener IP del visitante
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  res.json({ ip });
 });
 
-app.listen(3000, () => {
-  console.log("Servidor corriendo en http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
