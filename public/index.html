@@ -14,20 +14,21 @@
   <button onclick="getIP()">Ver mi IP</button>
   <p id="result"></p>
 
-  <script>
-    function getIP() {
-      fetch("/ip")
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("result").innerText =
-            "Your ip is: " + data.ip;
-        })
-        .catch(err => {
-          document.getElementById("result").innerText =
-            "Error getting the IP.";
-          console.error(err);
-        });
-    }
-  </script>
+<script>
+  function getIP() {
+    fetch("/ip")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("result").innerText =
+          "Your IPs are:\n" + data.ips.join(", ");
+      })
+      .catch(err => {
+        document.getElementById("result").innerText =
+          "Error getting the IP.";
+        console.error(err);
+      });
+  }
+</script>
+
 </body>
 </html>
