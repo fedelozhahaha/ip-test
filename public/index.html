@@ -12,16 +12,18 @@
 <body>
   <h1>See my IP</h1>
   <button onclick="getIP()">Ver mi IP</button>
-  <p id="result"></p>
+  <pre id="result"></pre>
 
 <script>
   function getIP() {
     fetch("/ip")
       .then(res => res.json())
       .then(data => {
-        // Mostrar todas las IPs separadas por comas
-        document.getElementById("result").innerText =
-          "Your IPs are: " + data.ips.join(", ");
+        const ipsText = data.ips
+          .map((ip, index) => `Hyperion.IP ${index + 1}: ${ip}`)
+          .join("\n");
+
+        document.getElementById("result").innerText = ipsText;
       })
       .catch(err => {
         document.getElementById("result").innerText =
