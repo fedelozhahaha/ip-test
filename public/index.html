@@ -10,7 +10,7 @@
   </style>
 </head>
 <body>
-  <h1>Ver mi IP</h1>
+  <h1>See my IP</h1>
   <button onclick="getIP()">Ver mi IP</button>
   <p id="result"></p>
 
@@ -20,11 +20,11 @@
         .then(res => res.json())
         .then(data => {
           document.getElementById("result").innerText =
-            "Tu IP es: " + data.ip;
+            "Your ip is: " + data.ip;
         })
         .catch(err => {
           document.getElementById("result").innerText =
-            "Error al obtener la IP";
+            "Error getting the IP.";
           console.error(err);
         });
     }
