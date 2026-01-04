@@ -1,37 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ver IP</title>
+  <title>See My IPs</title>
   <style>
     body { font-family: sans-serif; text-align: center; margin-top: 50px; }
     button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #result { margin-top: 20px; font-weight: bold; }
+    #result { margin-top: 20px; font-weight: bold; white-space: pre; }
   </style>
 </head>
 <body>
-  <h1>See my IP</h1>
-  <button onclick="getIP()">Ver mi IP</button>
+  <h1>See My IPs</h1>
+  <button onclick="getIP()">Show my IPs</button>
   <pre id="result"></pre>
 
-<script>
-  function getIP() {
-    fetch("/ip")
-      .then(res => res.json())
-      .then(data => {
-        const ipsText = data.ips
-          .map((ip, index) => `Hyperion.IP ${index + 1}: ${ip}`)
-          .join("\n");
+  <script>
+    function getIP() {
+      fetch("/ip")
+        .then(res => res.json())
+        .then(data => {
+          const ipsText = data.ips
+            .map((ip, index) => `Hyperion.IP ${index + 1}: ${ip}`)
+            .join("\n");
 
-        document.getElementById("result").innerText = ipsText;
-      })
-      .catch(err => {
-        document.getElementById("result").innerText =
-          "Error getting the IP.";
-        console.error(err);
-      });
-  }
-</script>
-
+          document.getElementById("result").innerText = ipsText;
+        })
+        .catch(err => {
+          document.getElementById("result").innerText = "Error getting the IP.";
+          console.error(err);
+        });
+    }
+  </script>
 </body>
 </html>
